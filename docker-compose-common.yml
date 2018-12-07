@@ -9,7 +9,7 @@ logstash:
   environment:
     # otherwise logstash will keep sending its own logs to itself over and
     # over... not fun
-    LOGSPOUT: ignore 
+    LOGSPOUT: ignore
   command: -f /etc/logstash.sample.conf
 kibana:
   ports:
@@ -29,3 +29,22 @@ cadvisor:
     - /var/lib/docker/:/var/lib/docker:ro
   ports:
     - "8080:8080"
+caddy:
+  container_name: caddy
+  ports:
+    - "8080:8080"
+    - "80:80"
+    - "5000:5000"
+    - "9200:9200"
+    - "9300:9300"
+    - "8000:8000"
+  volumes:
+    - ./caddy/:/etc/caddy/
+  environment:
+    - ADMIN_USER=${ADMIN_USER:-admin}
+    - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+  restart: unless-stopped
+  networks:
+    - monitor-net
+  labels:
+    org.label-schema.group: "monitoring"

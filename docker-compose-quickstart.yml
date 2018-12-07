@@ -25,3 +25,8 @@ cadvisor:
   extends:
     file: docker-compose-common.yml
     service: cadvisor
+caddy:
+  extends:
+    file: docker-compose-common.yml
+    service: caddy
+  image: stefanprodan/caddy
